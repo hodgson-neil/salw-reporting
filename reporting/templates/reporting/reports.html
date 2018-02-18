@@ -5,7 +5,18 @@
     <title>Title</title>
 </head>
 <body>
-    <p>Hi there!</p>
-    <p>It works!</p>
+
+<div>
+    <h1><a href="/">SALW Reporting</a></h1>
+</div>
+
+{% for report in reports %}
+    <div>
+        <p>published: {{ report.published_date }}</p>
+        <h1><a href="">{{ report.headline }}</a></h1>
+        <p>{{ report.summary|linebreaksbr }}</p>
+    </div>
+{% endfor %}
+
 </body>
 </html>

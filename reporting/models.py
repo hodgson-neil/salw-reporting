@@ -35,7 +35,9 @@ class Report(models.Model):
     summary = models.TextField()
 
     #
-    country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True)
+    country = models.ForeignKey(Country,
+                                on_delete=models.SET_NULL,
+                                null=True, blank=True)
 
     #
     location = models.CharField(max_length=200)
@@ -44,23 +46,26 @@ class Report(models.Model):
     incident_date = models.DateField()
 
     #
-    additional_incident_data_infor = models.CharField(max_length=200)
+    additional_incident_data_info = models.CharField(max_length=200,
+                                                     null=True, blank=True)
 
     #
     source_date = models.DateField()
 
     #
-    report_url = models.URLField(max_length=300)
+    report_url = models.URLField(max_length=300, null=True, blank=True)
 
     #
-    source = models.CharField(max_length=200)
+    source = models.CharField(max_length=200, null=True, blank=True)
 
     incident_type = models.ForeignKey(IncidentType,
                                       on_delete=models.SET_NULL,
-                                      null=True)
+                                      null=True, blank=True)
 
     #
-    related_reports = models.ForeignKey('self', on_delete=models.CASCADE)
+    related_reports = models.ForeignKey('self',
+                                        on_delete=models.SET_NULL,
+                                        null=True, blank=True)
 
     #
     report_code = models.CharField(max_length=20)
@@ -68,7 +73,7 @@ class Report(models.Model):
     #
     weapon = models.ForeignKey(Weapon,
                                on_delete=models.SET_NULL,
-                               null=True)
+                               null=True, blank=True)
 
     #
     created_date = models.DateTimeField(
