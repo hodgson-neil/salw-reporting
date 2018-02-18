@@ -3,82 +3,30 @@ from django.db import models
 from django.utils import timezone
 
 
+class Region(models.Model):
+    name = models.CharField(max_length=25)
+
+
+class Country(models.Model):
+    name = models.CharField(max_length=25)
+    iso_country_code = models.CharField(max_length=3)
+    region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
+
+
+class Weapon(models.Model):
+    type = models.CharField(max_length=30)
+
+
+class IncidentType(models.Model):
+    description = models.CharField(max_length=200)
+
+
 class Report(models.Model):
 
-    SOUTH_AMERICA = 'SAM'
-    CENTRAL_AMERICA = 'CAM'
-    EAST_ASIA_PAC = 'EAPAC'
-    NORTH_AFRICA = 'NAFR'
-    WEST_AFRICA = 'WAFR'
-    CENTRAL_AFRICA = 'CAFR'
-    EAST_AFRICA = 'EAFR'
-    REGION_CHOICES = (
-        (SOUTH_AMERICA, 'South America'),
-        (CENTRAL_AMERICA, 'Central America'),
-        (EAST_ASIA_PAC, 'East Asia / Pacific'),
-        (NORTH_AFRICA, 'North Africa'),
-        (WEST_AFRICA, 'West Africa'),
-        (CENTRAL_AFRICA, 'Central Africa'),
-        (EAST_AFRICA, 'East Africa'),
-    )
-
-    PISTOL = 'PISTOL'
-    REVOLVER = 'REVOLVER'
-    RIFEL = 'RIFEL'
-    SHOTGUN = 'SHOTGUN'
-    SMALL_ARMS_AMMUNITION = 'SMALL_ARMS_AMMUNITION' 
-    MACHINE_GUN = 'MACHINE_GUN'
-    EXPLOSIVE_ORDNANCE = 'EXPLOSIVE_ORDNANCE'
-    ATGM = 'ATGM'
-    MANPADS = 'MANPADS'
-    UNSPECIFIED = 'UNSPECIFIED'
-    OTHER = 'OTHER'
-    
-    WEAPONS_CHOICES = (
-        (PISTOL, 'Pistol'),
-        (REVOLVER, 'Revolver'),
-        (RIFEL, 'Rifel'),
-        (SHOTGUN, 'Shotgun'),
-        (SMALL_ARMS_AMMUNITION, 'Small Arms Ammunition'),
-        (MACHINE_GUN, 'Machine Gun'),
-        (EXPLOSIVE_ORDNANCE, 'Explosive Ordnance'),
-        (ATGM, 'ATGM'),
-        (MANPADS, 'MANPADS'),
-        (UNSPECIFIED, 'Unspecified'),
-        (OTHER, 'Other'),
-    )
-
-    LOSS = 'LOSS'
-    LOOTING = 'LOOT'
-    UNAUTH_TRANSFER_OR_USE = 'UNTRU'
-    CORRUPT_SALE_OR_RENT = 'CSR'
-    SEIZURE = 'SEIZ'
-    DIVERTED = 'DIV'
-    LAW = 'LAW'
-    DESERTION = 'DESERT'
-    UNPLANNED = 'UNPLANNED'
-    SAFETY_SECURITY = 'SAFSEC'
-    DISARMAMENT = 'DISARM'
-    AMNESTY = 'AM'
-
-    INCIDENT_CHOICES = (
-        (LOSS, 'Loss'),
-        (LOOTING, 'Looting'),
-        (UNAUTH_TRANSFER_OR_USE, 'Unauthorized transfer or use'),
-        (CORRUPT_SALE_OR_RENT, 'Corrupt sale or rent'),
-        (SEIZURE, 'Seizure'),
-        (DIVERTED, 'Use of diverted weapons(in criminal, terrorist or insurgency incidents)'),
-        (LAW, 'Law enforcement(law enforcement action, court cases, investigation, government campaigns & action)'),
-        (DESERTION, 'Desertion with weapons'),
-        (UNPLANNED, 'Unplanned explosions at munitions sites(UEMS)'),
-        (SAFETY_SECURITY, 'Safety and security'),
-        (DISARMAMENT, 'Disarmament'),
-        (AMNESTY, 'Weapons amnesty'),
-        (OTHER, 'Other')
-    )
-
     #
-    author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    author = models.ForeignKey('auth.User',
+                               on_delete=models.SET_NULL,
+                               null=True)
 
     #
     headline = models.CharField(max_length=200)
@@ -87,13 +35,7 @@ class Report(models.Model):
     summary = models.TextField()
 
     #
-    region = models.CharField(
-        max_length=20,
-        choices=REGION_CHOICES,
-    )
-
-    #
-    country = models.CharField(max_length=3)
+    country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True)
 
     #
     location = models.CharField(max_length=200)
@@ -113,10 +55,9 @@ class Report(models.Model):
     #
     source = models.CharField(max_length=200)
 
-    incident_type = models.CharField(
-        max_length=20,
-        choices=INCIDENT_CHOICES,
-    )
+    incident_type = models.ForeignKey(IncidentType,
+                                      on_delete=models.SET_NULL,
+                                      null=True)
 
     #
     related_reports = models.ForeignKey('self', on_delete=models.CASCADE)
@@ -125,10 +66,9 @@ class Report(models.Model):
     report_code = models.CharField(max_length=20)
 
     #
-    weapons = models.CharField(
-        max_length=20,
-        choices=WEAPONS_CHOICES,
-    )
+    weapon = models.ForeignKey(Weapon,
+                               on_delete=models.SET_NULL,
+                               null=True)
 
     #
     created_date = models.DateTimeField(
