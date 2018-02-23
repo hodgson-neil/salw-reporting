@@ -17,6 +17,11 @@ ADD requirements.txt /code/
 RUN pip install -r requirements.txt
 ADD . /code/
 
+# CHANGE!!! should be passed in a secrets using the CI tool
+ENV DJANGO_SU_NAME admin
+ENV DJANGO_SU_EMAIL admin@admin.org
+ENV DJANGO_SU_PASSWORD admin
+
 RUN chmod u+x /usr/local/bin/init.sh
 EXPOSE 8000 2222
 ENTRYPOINT ["init.sh"]

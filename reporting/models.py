@@ -58,30 +58,23 @@ class Report(models.Model):
     #
     source = models.CharField(max_length=200, null=True, blank=True)
 
-    incident_type = models.ForeignKey(IncidentType,
-                                      on_delete=models.SET_NULL,
-                                      null=True, blank=True)
+    incident_types = models.ManyToManyField(IncidentType)
 
     #
-    related_reports = models.ForeignKey('self',
-                                        on_delete=models.SET_NULL,
-                                        null=True, blank=True)
+    related_reports = models.ManyToManyField('self')
 
     #
     report_code = models.CharField(max_length=20)
 
     #
-    weapon = models.ForeignKey(Weapon,
-                               on_delete=models.SET_NULL,
-                               null=True, blank=True)
+    weapons = models.ManyToManyField(Weapon)
 
     #
     created_date = models.DateTimeField(
             default=timezone.now)
 
     #
-    published_date = models.DateTimeField(
-            blank=True, null=True)
+    published_date = models.DateTimeField(blank=True, null=True)
 
     def publish(self):
         self.published_date = timezone.now()
