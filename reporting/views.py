@@ -5,6 +5,10 @@ from django.utils import timezone
 from .models import Report
 
 
+def index(request):
+    return render(request, 'reporting/index.html')
+
+
 def reports_list(request):
     reports = Report.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
     return render(request, 'reporting/reports.html', {'reports': reports})

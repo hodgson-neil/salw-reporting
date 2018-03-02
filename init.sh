@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-echo "Starting SSH ..."
-service ssh start
+#ßecho "Starting SSH ..."
+#service ssh start
 python /code/manage.py makemigrations
 python /code/manage.py migrate
 python /code/manage.py initadmin
